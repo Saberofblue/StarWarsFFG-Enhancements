@@ -186,6 +186,18 @@ function defineVendor() {
         return options;
     }
 
+    /**
+     * The vendor form carries no actor stat fields, and the system's actor-update helper (which the
+     * base sheet delegates to) assumes them; without this, closing the sheet threw. Only the plain
+     * fields on the form (the name) are written back.
+     * @override
+     */
+    async _updateObject(event, formData) {
+        const expanded = foundry.utils.expandObject(formData ?? {});
+        if (expanded.data || expanded.system) return super._updateObject(event, formData);
+        if (expanded.name !== undefined && expanded.name !== this.actor.name) return this.actor.update({ name: expanded.name });
+    }
+
     get template() {
         return "modules/ffg-star-wars-enhancements/templates/shop/inventory.html";
     }
