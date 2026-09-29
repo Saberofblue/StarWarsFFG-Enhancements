@@ -1,3 +1,13 @@
+# 3.1.0
+
+- Foundry VTT 14 support (verified 14.368; still runs on 13).
+- Status Icon Counters 3: talent-checker and stimpack-sync statuses are toggled on the actor and counted through the effect counter (the legacy counter constructor no longer exists).
+- Chat hooks moved to renderChatMessageHTML; the strain reminder uses CHAT_MESSAGE_STYLES.
+- The dice helper ignores rolls that are not FFG dice pools instead of throwing.
+- Runs under any Star Wars FFG system id (e.g. the starwarsffg_sandbox build): the vendor sheet takes the system sheet from the registry, system helpers load by dynamic import, settings/flags/paths/CSS classes use the running id.
+- Vendor sheet: closing the sheet no longer throws (its form carries no actor stats).
+- Manifest: both system ids declared; fixed the misspelled compatibility keys; dependency versions raised to their v14 releases.
+
 
 `3.0.0` - 2026-03-28
 - Improvement: [Talent Reminders!](https://github.com/wrycu/StarWarsFFG-Enhancements/pull/232)
