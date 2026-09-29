@@ -1,14 +1,23 @@
-import { ActorSheetFFGV2 } from "../../../systems/starwarsffg/modules/actors/actor-sheet-ffg-v2.js";
 import { log_msg as log } from "./util.js";
 import { open_shop_generator } from "./shop.js";
-import ImportHelpers from "../../../systems/starwarsffg/modules/importer/import-helpers.js";
+
+/* The system's V2 actor sheet, taken from the sheet registry under the RUNNING system id (the
+ * system may be installed as e.g. starwarsffg_sandbox) instead of a hard-coded import path. Only
+ * available once the system has registered its sheets, i.e. from the init hook on. */
+function systemSheetBase() {
+    const registered = CONFIG.Actor?.sheetClasses?.character ?? {};
+    return (
+        registered[`${game.system.id}.ActorSheetFFGV2`]?.cls ??
+        Object.values(registered).map((s) => s.cls).find((c) => c?.name === "ActorSheetFFGV2")
+    );
+}
 
 let module_name = "shop_sheet";
 
 /* Register the vendor sheet */
 export function init() {
     log(module_name, "Registering sheet");
-    foundry.documents.collections.Actors.registerSheet("ffg", Vendor, {
+    foundry.documents.collections.Actors.registerSheet("ffg", defineVendor(), {
         label: "ffg-sw-enhanced-vendor",
         makeDefault: false,
     });
@@ -154,13 +163,19 @@ async function find_item_id(actor_id, item_name) {
 /*
 Sets up a sheet for rendering our wonderful shop
  */
-export class Vendor extends ActorSheetFFGV2 {
+export let Vendor = null;
+
+function defineVendor() {
+    if (Vendor) return Vendor;
+    const Base = systemSheetBase();
+    if (!Base) throw new Error("ffg-star-wars-enhancements: the system's ActorSheetFFGV2 sheet is not registered yet");
+    Vendor = class Vendor extends Base {
     /* based extensively on https://github.com/jopeek/fvtt-loot-sheet-npc-5e/blob/master/lootsheetnpc5e.js */
     static get defaultOptions() {
         const options = super.defaultOptions;
 
         foundry.utils.mergeObject(options, {
-            classes: ["starwarsffg", "sheet", "actor", "v2", "ffg-sw-enhanced", "vendor"],
+            classes: [game.system.id, "sheet", "actor", "v2", "ffg-sw-enhanced", "vendor"],
             template: "modules/ffg-star-wars-enhancements/templates/shop/inventory.html",
             width: 710,
             height: 650,
@@ -273,6 +288,7 @@ export class Vendor extends ActorSheetFFGV2 {
                 item = game.items.get(itemId);
 
                 if (!item) {
+                    const { default: ImportHelpers } = await import(`/systems/${game.system.id}/modules/importer/import-helpers.js`);
                     item = await ImportHelpers.findCompendiumEntityById("Item", itemId);
                 }
             }
@@ -354,4 +370,6 @@ export class Vendor extends ActorSheetFFGV2 {
         };
         game.socket.emit("module.ffg-star-wars-enhancements", show_packet);
     }
+    };
+    return Vendor;
 }

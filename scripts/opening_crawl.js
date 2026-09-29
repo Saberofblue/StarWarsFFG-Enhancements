@@ -575,7 +575,7 @@ class opening_crawl_UISettings extends FormApplication {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: "data-importer",
-            classes: ["starwarsffg", "data-import"],
+            classes: [game.system.id, "data-import"],
             title: `${game.i18n.localize("ffg-star-wars-enhancements.opening-crawl.ui.name")}`,
             template: "modules/ffg-star-wars-enhancements/templates/settings.html",
         });
