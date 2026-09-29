@@ -16,11 +16,6 @@ let module_name = "shop_sheet";
 
 /* Register the vendor sheet */
 export function init() {
-    log(module_name, "Registering sheet");
-    foundry.documents.collections.Actors.registerSheet("ffg", defineVendor(), {
-        label: "ffg-sw-enhanced-vendor",
-        makeDefault: false,
-    });
     game.settings.register("ffg-star-wars-enhancements", "general_shop_compendiums", {
         name: game.i18n.localize("ffg-star-wars-enhancements.shop.setting.general.name"),
         hint: game.i18n.localize("ffg-star-wars-enhancements.shop.setting.general.hint"),
@@ -60,6 +55,13 @@ export function init() {
 Configures the socket listener used for purchasing items
  */
 export function ready() {
+    // the system registers ActorSheetFFGV2 late in its own init hook (after awaits), so the vendor
+    // sheet, which extends it, is registered here rather than in init
+    log(module_name, "Registering sheet");
+    foundry.documents.collections.Actors.registerSheet("ffg", defineVendor(), {
+        label: "ffg-sw-enhanced-vendor",
+        makeDefault: false,
+    });
     log(module_name, "Setting up socket listener");
     game.socket.on("module.ffg-star-wars-enhancements", socket_listener);
 }

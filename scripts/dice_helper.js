@@ -94,6 +94,10 @@ export function dice_helper() {
             if (is_roll(messageData) === true) {
                 // as of some v10 version, chat messages can contain >1 roll. let's just read the first
                 messageData["_roll"] = messageData.rolls[0];
+                if (!messageData["_roll"]?.ffg) {
+                    log(feature_name, "Roll is not an FFG dice pool; ignoring");
+                    return;
+                }
                 let skill = messageData["flavor"]
                     .replace(game.i18n.localize("SWFFG.Rolling") + " ", "")
                     .replace("...", "")
