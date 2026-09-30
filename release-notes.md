@@ -1,3 +1,8 @@
+## 3.2.0
+
+- Opening Crawl: a playlist can now be chosen in the Opening Crawl settings. The client that launches the crawl starts it after the music delay, Foundry's playlist sync plays it for every connected player, and it stops when the crawl closes unless the new "Stop the playlist when the crawl ends" switch is turned off. Works alongside or instead of the existing music file.
+- Opening Crawl settings: choice fields render again on Foundry 13+ (the removed `select` helper was still used), and the music delay hint now says seconds, which is what the code always used.
+
 ## 3.1.1
 
 - Dice helper: the advantage/threat suggestion message is posted again. It was created with the legacy numeric `type` field, which Foundry 12+ rejects (`type: "0" is not a valid type`); it now uses `style`.
