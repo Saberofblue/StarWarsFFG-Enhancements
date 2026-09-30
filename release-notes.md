@@ -1,3 +1,7 @@
+## 3.1.1
+
+- Dice helper: the advantage/threat suggestion message is posted again. It was created with the legacy numeric `type` field, which Foundry 12+ rejects (`type: "0" is not a valid type`); it now uses `style`.
+
 # 3.1.0
 
 - Foundry VTT 14 support (verified 14.368; still runs on 13).
