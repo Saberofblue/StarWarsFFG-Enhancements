@@ -1,3 +1,7 @@
+## 3.2.1
+
+- Manifest: the module could not be enabled ("issues in required dependencies") because 3.2.0 asked for Status Icon Counters 3.2.0 or newer, a version that does not exist; the 3.2.0 bump had rewritten that minimum along with the module's own version. It is 3.1.1 again.
+
 ## 3.2.0
 
 - Opening Crawl: a playlist can now be chosen in the Opening Crawl settings. The client that launches the crawl starts it after the music delay, Foundry's playlist sync plays it for every connected player, and it stops when the crawl closes unless the new "Stop the playlist when the crawl ends" switch is turned off. Works alongside or instead of the existing music file.
